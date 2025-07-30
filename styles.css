@@ -1,5 +1,5 @@
 body{
-    background-color: hsl(240, 100%, 15%);
+    background-color: hsl(240, 100%, 25%);
     color: white;
 }
 
@@ -22,6 +22,12 @@ header h1{
 header h2{
     margin-top: 0px;
     font-size: 3rem;
+}
+
+header #score{
+    margin-top: 0px;
+    font-size: 3rem;
+    display: none;
 }
 
 /* Header */
