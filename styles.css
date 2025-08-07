@@ -1,0 +1,88 @@
+body{
+    background-color: hsl(240, 100%, 25%);
+    color: white;
+}
+
+/* Header */
+
+header div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+header h1{
+    font-family: "Bitcount Grid Double";
+    font-size: 5rem;
+    color: wheat;
+}
+
+header h2{
+    margin-top: 0px;
+    font-size: 3rem;
+}
+
+header #score{
+    margin-top: 0px;
+    font-size: 3rem;
+    display: none;
+}
+
+/* Header */
+
+/* main */
+
+main{
+    padding-bottom: 50px;
+}
+
+.game-wrapper{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 40%;
+    gap: 75px;
+}
+
+.play-box{
+    height: 300px;
+    border-radius: 50px;
+    border: 15px solid rgb(0, 0, 0);
+}
+
+.green{
+    background-color: green;
+}
+
+.red{
+    background-color: red;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+/* main */
+
+
+#testDiv{
+    width: 500px;
+    height: 500px;
+    background-color: purple;
+}
+
+
+
