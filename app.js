@@ -1,9 +1,9 @@
 let userScore = 1;
 
-let = gamePattern = [];
+let gamePattern = [];
 let playerPattern = [];
 
-let gameState;
+let gameState = false;
 
 //game pattern
 //runda gracza
@@ -20,7 +20,6 @@ async function game(){
     gameState = true;
 
     while(gameState){
-        console.log("xd");
         countPoints();
         await playRound();
     }
@@ -31,9 +30,7 @@ async function game(){
 
 $(document).keydown(function(event){
 
-    console.log(event.key);
-
-    if(event.key === "a" || event.key === "A"){
+    if((event.key === "a" || event.key === "A") && gameState === false){
         game();
     }
 
@@ -41,15 +38,15 @@ $(document).keydown(function(event){
 
 async function playRound() {
 
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await changeColorOfBox();   
 
-    await changeColorOfBox();
+    await new Promise(resolve => setTimeout(resolve, 400));
 
-    console.log("zrobilo changecolorofbox");
+    const startRestartInformation = $("#startResetInformation");
+    startRestartInformation.text("Player move");
 
     for(let i = 0; i < userScore; i++){
         if(!gameState){
-            console.log("Wrong pattern");
             return;
         }
         else{
@@ -58,14 +55,9 @@ async function playRound() {
         }
     }
 
-    console.log(`User Score ${userScore}`);
+    playerPattern = [];
 
     userScore++;
-
-    console.log(`User Score ${userScore}`);
-
-    console.log("Checked all patterns");
-        
 }
 
 
@@ -80,14 +72,16 @@ async function countPoints(){
         score.css("display", "block");
     }
     else{
-        startRestartInformation.text("Press A key to restart");
+        startRestartInformation.text("Wrong answer! Press A key to restart");
         startRestartInformation.css("display", "block");
-        score.text(`Your score in this round: ${userScore}`);
+        score.text(`Your score in this round was: ${userScore}`);
     }
 
 }
 
 async function changeColorOfBox(){
+
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const redBox = $(".red");
     const blueBox = $(".blue");
@@ -96,11 +90,7 @@ async function changeColorOfBox(){
 
     let randomBox = pickRandomBox();
 
-    console.log(randomBox);
-
     gamePattern.push(randomBox);
-
-    console.log(gamePattern);
 
     for (let i = 0; i < gamePattern.length; i++) {
 
@@ -135,18 +125,9 @@ async function changeColorOfBox(){
                 break;
         }
 
-        await new Promise(resolve => setTimeout(resolve, 300));
-
-        const startRestartInformation = $("#startResetInformation");
-        startRestartInformation.text("Player move");   
     }
 
 }
-
-    
-
-    
-
 
 function playerMove(currentMoveLoop){
 
@@ -155,9 +136,12 @@ function playerMove(currentMoveLoop){
     const yellowBox = "play-box yellow";
     const greenBox = "play-box green";
 
-    let currentMove = currentMoveLoop;
+    const redBoxMove = $(".red");
+    const blueBoxMove = $(".blue");
+    const yellowBoxMove = $(".yellow");
+    const greenBoxMove = $(".green");
 
-    console.log(`Player mark move number ${currentMove}`);
+    let currentMove = currentMoveLoop;
 
     return new Promise((resolve) => {
         $(document).one("click", function (event) {
@@ -166,29 +150,31 @@ function playerMove(currentMoveLoop){
 
             const clickedElementBoxColor = clickedElementClass.slice(9);
 
-            console.log(`Player marks ${clickedElementBoxColor}`);
-
             if (clickedElementClass === redBox) {
+                redBoxMove.fadeOut(100).fadeIn(100);
                 let redBoxAudio = new Audio("sounds/red.mp3");
                 redBoxAudio.play()
                 playerPattern.push(clickedElementBoxColor);
             }
             else if (clickedElementClass === blueBox) {
+                blueBoxMove.fadeOut(100).fadeIn(100);
                 let blueBoxAudio = new Audio("sounds/blue.mp3");
                 blueBoxAudio.play();
                 playerPattern.push(clickedElementBoxColor);
 
             }
             else if (clickedElementClass === yellowBox) {
+                yellowBoxMove.fadeOut(100).fadeIn(100);
                 let yellowBoxAudio = new Audio("sounds/yellow.mp3");
                 yellowBoxAudio.play()
                 playerPattern.push(clickedElementBoxColor);
 
             }
             else if (clickedElementClass === greenBox) {
+                greenBoxMove.fadeOut(100).fadeIn(100);
                 let greenBoxAudio = new Audio("sounds/green.mp3");
                 greenBoxAudio.play()
-                playerPattern.push(clickedElementBoxColor);
+                playerPattern.push(clickedElementBoxColor)
             }
 
             resolve(checkAnswers(currentMove));
@@ -200,20 +186,15 @@ function playerMove(currentMoveLoop){
 
 function checkAnswers(currentMove){
 
-    console.log("currentMove" + currentMove);
-
-    console.log(`Game checks move number ${currentMove}`);
-
-
     if(gamePattern[currentMove] !== playerPattern[currentMove]){
         gameState = false;
-        console.log("YOU LOSE!");
-    }
-    else{
-        console.log("Dobra odpowiedz nastepna runda!");
+        const loseSound = new Audio("sounds/wrong.mp3");
+        loseSound.play();
+        countPoints();
+        userScore = 0;
+        gamePattern = [];
     }
     
-
 }
 
 function pickRandomBox(){
@@ -241,13 +222,3 @@ function pickRandomBox(){
 
     return randomBox;
 }
-
-
-$("#testDiv").click(function(){
-    console.log("clicked");
-    $("#testDiv").fadeOut(200).fadeIn(200);
-})
-
-
-
-
